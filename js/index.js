@@ -1,10 +1,10 @@
-let idCount = 0;
-
+let idCount = 50;
+const monstersArray = [];
 function monsterList(){    
     fetch('http://localhost:3000/monsters')
     .then(res=>res.json())
     .then(data=>data.forEach(m=>{
-        if(m.id < 51){
+        if(m.id <= idCount){
         monsterRender(m)
         }
     }))
@@ -24,11 +24,11 @@ function monsterRender(monster){
     age.textContent = `Age: ${monster.age}`
     desc.textContent = `Bio: ${monster.description}`
 
-    document.getElementById('monster-container').appendChild(name)
+    document.getElementById('monster-container').append(name)
         //document.getElementById('monster-container').appendChild(space)
-    document.getElementById('monster-container').appendChild(age)
+    document.getElementById('monster-container').append(age)
         //document.getElementById('monster-container').appendChild(space)
-    document.getElementById('monster-container').appendChild(desc)
+    document.getElementById('monster-container').append(desc)
         //document.getElementById('monster-container').appendChild(space)
     
 
@@ -65,8 +65,25 @@ function newMonster(){
 }
 
 document.addEventListener('DOMContentLoaded', newMonster)
-document.addEventListener('DOMContentLoaded', monsterList)
-document.querySelector('#forward').addEventListener('click', ()=>console.log('hi'))
+document.addEventListener('DOMContentLoaded', ()=>{
+    monsterList()
+    document.querySelector('#forward').addEventListener('click', ()=>{
+    idCount+=50
+    monsterList()})
+
+})
+document.addEventListener('DOMContentLoaded', ()=>{
+    //monsterList()
+    document.querySelector('#back').addEventListener('click', ()=>{
+        idCount-=50
+        if(idCount>=50){
+        const monsterCont = document.querySelector('#monster-container')  
+        while (monsterCont.firstChild) {
+            monsterCont.removeChild(monsterCont.firstChild);
+        }  
+        monsterList()}
+    })
+})
 
 /*function idList(){
     const ids =  fetch('http://localhost:3000/monsters')
